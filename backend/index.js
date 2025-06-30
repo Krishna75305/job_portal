@@ -9,42 +9,52 @@ import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
 import path from "path";
 
-
 dotenv.config({});
 connectDB();
-const PORT =  process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-const app=express();
-const _dirname= path.resolve();
+const app = express();
+const __dirname = path.resolve();
 
-
-//middleware
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const corsOptions ={
-  origin:'https://job-portal-57fw.onrender.com',
-  credentials:true
-}
+
+
+const allowedOrigins = [
+  "https://job-portal-1-p73h.onrender.com", 
+  "http://localhost:3000" 
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl) or allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
 
 app.use(cors(corsOptions));
 
-
-
-//api's
-app.use("/api/v1/user",userRoute);
+// Routes
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-app.use(express.static(path.join(_dirname, "/frontend/dist")));
-app.get('*' , (_ , res)=>{
-  res.sendFile(path.resolve(_dirname , "frontend", "dist"  , "index.html"));
-})
+// Serve frontend (Vite build output)
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-app.listen(PORT,()=>{
-      // connectDB();
-      console.log(`Server running at port ${PORT}`);
-})
+app.get("*", (_, res) => {
+  res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+});
 
- 
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at port ${PORT}`);
+});
