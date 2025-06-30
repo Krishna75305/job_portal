@@ -11,7 +11,7 @@ export const register = async (req, res) => {
     if (!fullname || !email || !phoneNumber || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
-        success: false
+        success: false,
       });
     }
 
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         message: "User already exists with this email.",
-        success: false
+        success: false,
       });
     }
 
@@ -39,20 +39,19 @@ export const register = async (req, res) => {
       password: hashedPassword,
       role,
       profile: {
-        profilePhoto: cloudResponse?.secure_url || null
-      }
+        profilePhoto: cloudResponse?.secure_url || null,
+      },
     });
 
     return res.status(201).json({
       message: "Account created successfully.",
-      success: true
+      success: true,
     });
-
   } catch (error) {
     console.error("❌ Registration error:", error);
     return res.status(500).json({
       message: "Server error during registration",
-      success: false
+      success: false,
     });
   }
 };
@@ -64,7 +63,7 @@ export const login = async (req, res) => {
     if (!email || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
-        success: false
+        success: false,
       });
     }
 
@@ -73,7 +72,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         message: "Incorrect email or password.",
-        success: false
+        success: false,
       });
     }
 
@@ -81,22 +80,24 @@ export const login = async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(400).json({
         message: "Incorrect email or password.",
-        success: false
+        success: false,
       });
     }
 
     if (role !== user.role) {
       return res.status(400).json({
         message: "Account does not exist with current role",
-        success: false
+        success: false,
       });
     }
 
     const tokenData = {
-      userId: user._id
+      userId: user._id,
     };
 
-    const token = jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: "1d" });
+    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
 
     const sanitizedUser = {
       _id: user._id,
@@ -104,42 +105,41 @@ export const login = async (req, res) => {
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
-      profile: user.profile
+      profile: user.profile,
     };
 
-    return res.status(200)
+    return res
+      .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "strict"
+        sameSite: "strict",
       })
       .json({
         message: `Welcome back ${user.fullname}`,
         user: sanitizedUser,
-        success: true
+        success: true,
       });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       message: "Server error during login",
-      success: false
+      success: false,
     });
   }
 };
 
 export const logout = async (req, res) => {
   try {
-    return res.status(200)
-      .cookie("token", "", { maxAge: 0 })
-      .json({
-        message: "Logged out successfully",
-        success: true
-      });
+    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+      message: "Logged out successfully",
+      success: true,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       message: "Server error during logout",
-      success: false
+      success: false,
     });
   }
 };
@@ -175,7 +175,7 @@ export const updateProfile = async (req, res) => {
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
-    if (skills) user.profile.skills = skills.split(",").map(s => s.trim());
+    if (skills) user.profile.skills = skills.split(",").map((s) => s.trim());
 
     if (cloudResponse) {
       user.profile.resume = cloudResponse.secure_url;

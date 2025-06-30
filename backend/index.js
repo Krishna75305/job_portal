@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions ={
-  origin:'http://localhost:5173',
+  origin:'https://job-portal-57fw.onrender.com',
   credentials:true
 }
 
@@ -43,7 +43,7 @@ app.get('*' , (_ , res)=>{
 })
 
 app.listen(PORT,()=>{
-      connectDB();
+      // connectDB();
       console.log(`Server running at port ${PORT}`);
 })
 
