@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cloudinary from "../utils/cloudinary.js";
-import { getDataUri } from "../utils/dataUri.js"; // You must implement this helper
+import { getDatauri } from "../utils/datauri.js"; // You must implement this helper
 
 export const register = async (req, res) => {
   try {
@@ -26,7 +26,7 @@ export const register = async (req, res) => {
     // Handle optional file upload
     let cloudResponse = null;
     if (req.file) {
-      const fileUri = getDataUri(req.file);
+      const fileUri = getDatauri(req.file);
       cloudResponse = await cloudinary.uploader.upload(fileUri.content);
     }
 
@@ -164,7 +164,7 @@ export const updateProfile = async (req, res) => {
     let cloudResponse = null;
 
     if (file) {
-      const fileUri = getDataUri(file);
+      const fileUri = getDatauri(file);
       cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
         resource_type: "auto",
       });
