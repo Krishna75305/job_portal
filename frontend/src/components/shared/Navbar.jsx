@@ -101,7 +101,7 @@ const Navbar = () => {
 
                 <div className="flex flex-col my-2 text-gray-600">
                   {user.role === "student" && (
-                    <div className="flex items-center gap-2 cursor-pointer">
+                    <div className="flex items-center gap-2 cursor-pointer my-2">
                       <User2 />
                       <Button variant="link" className="p-0 h-auto">
                         <Link to="/profile">View Profile</Link>

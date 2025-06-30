@@ -14,7 +14,7 @@ const Jobs = () => {
   useEffect(()=>{
     if(searchedQuery){
        const filteredJobs= allJobs.filter((job)=>{
-        return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) || job.description.toLowerCase().includes(searchedQuery.toLowerCase()) || job.location.toLowerCase().includes(searchedQuery.toLowerCase())
+        return job?.title.toLowerCase().includes(searchedQuery.toLowerCase()) || job.description.toLowerCase().includes(searchedQuery.toLowerCase()) || job.location.toLowerCase().includes(searchedQuery.toLowerCase())
        })
        setFilterJobs(filteredJobs)
     }else{

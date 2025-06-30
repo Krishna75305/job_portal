@@ -18,7 +18,7 @@ const Browse = () => {
   }, []);
 
   const filteredJobs = allJobs?.filter((job) =>
-    job.title.toLowerCase().includes(searchedQuery.toLowerCase())
+    job?.title.toLowerCase().includes(searchedQuery.toLowerCase())
   );
 
   return (
