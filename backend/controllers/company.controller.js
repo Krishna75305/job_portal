@@ -1,6 +1,6 @@
 import { Company } from "../models/company.model.js";
 import cloudinary from "../utils/cloudinary.js";
-import { getDataUri } from "../utils/dataUri.js";
+import { getDatauri } from "../utils/datauri.js";
 
 // Register Company
 export const registerCompany = async (req, res) => {
@@ -92,7 +92,7 @@ export const updateCompany = async (req, res) => {
     let logo;
 
     if (file) {
-      const fileUri = getDataUri(file);
+      const fileUri = getDatauri(file);
       if (!fileUri) {
         return res.status(400).json({
           message: "Invalid file uploaded",
