@@ -1,5 +1,5 @@
 import React from 'react'
-import LatestjobCards from './LatestjobCards';
+import LatestJobCards from './LatestJobCards';
 import { useSelector } from 'react-redux';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 
@@ -16,7 +16,7 @@ export const LatestJobs = () => {
       <div className='grid grid-cols-3 gap-4 my-5'>
        {allJobs && allJobs.length > 0 ? (
           allJobs.slice(0, 6).map((job) => (
-            <LatestjobCards  key={job._id} job={job} />
+            <LatestJobCards  key={job._id} job={job} />
           ))
         ) : (
           <span>No Jobs Available</span>
