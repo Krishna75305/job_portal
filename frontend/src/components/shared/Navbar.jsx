@@ -1,20 +1,20 @@
-"use client";
-
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "sonner";
+import { LogOutIcon, User2 } from "lucide-react";
+
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { LogOutIcon, User2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { USER_API_END_POINT } from "@/utils/constant";
-import { toast } from "sonner";
-import axios from "axios";
-import { setUser } from "@/redux/authSlice";
+} from "../ui/popover"; // fixed alias
+import { Button } from "../ui/button";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { setUser } from "../../redux/authSlice"; // fixed alias
+
+const USER_API_END_POINT = "https://job-portal-57fw.onrender.com/api/v1/user"; // moved directly here for clarity
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -41,11 +41,9 @@ const Navbar = () => {
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
-        <div>
-          <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
-          </h1>
-        </div>
+        <h1 className="text-2xl font-bold">
+          Job<span className="text-[#F83002]">Portal</span>
+        </h1>
 
         <div className="flex items-center gap-12">
           <ul className="flex font-medium items-center gap-5">

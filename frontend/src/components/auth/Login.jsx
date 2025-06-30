@@ -1,20 +1,21 @@
-import { Label } from "../ui/label";
-import Navbar from "../shared/Navbar";
 import React, { useEffect, useState } from "react";
-import { Input } from "../ui/input";
-import { RadioGroup } from "../ui/radio-group";
-import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setUser } from "@/redux/authSlice";
+import axios from "axios";
+import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-const USER_API_END_POINT = "http://localhost:8000/api/v1/user";
+import Navbar from "../shared/Navbar";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { RadioGroup } from "../ui/radio-group";
+import { setLoading, setUser } from "../../redux/authSlice"; // fixed alias path for compatibility
+
+const USER_API_END_POINT = "https://job-portal-57fw.onrender.com/api/v1/user";
 
 export const Login = () => {
-  const { loading , user} = useSelector((store) => store.auth);
+  const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,7 +33,8 @@ export const Login = () => {
     e.preventDefault();
     dispatch(setLoading(true));
     try {
-      const res = await axios.post("https://job-portal-57fw.onrender.com/api/v1/user/login",
+      const res = await axios.post(
+        `${USER_API_END_POINT}/login`,
         input,
         {
           headers: { "Content-Type": "application/json" },
@@ -41,7 +43,7 @@ export const Login = () => {
       );
 
       if (res?.data?.success) {
-        dispatch(setUser(res.data.user)); // This will persist user via redux-persist
+        dispatch(setUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
       }
@@ -52,11 +54,13 @@ export const Login = () => {
       dispatch(setLoading(false));
     }
   };
-  useEffect(()=>{
-    if(user){
+
+  useEffect(() => {
+    if (user) {
       navigate("/");
     }
-  },[])
+  }, [user]);
+
   return (
     <div>
       <Navbar />
@@ -93,7 +97,7 @@ export const Login = () => {
             />
           </div>
 
-          <RadioGroup className="flex items-center  mt-4">
+          <RadioGroup className="flex items-center mt-4">
             <div className="flex items-center gap-2">
               <Input
                 type="radio"
