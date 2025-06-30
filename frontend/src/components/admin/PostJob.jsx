@@ -26,7 +26,7 @@ const PostJob = () => {
     salary: "",
     location: "",
     jobType: "",
-    experience: "",
+    experienceLevel: "",
     position: 0,
     companyId: "",
   });
@@ -146,8 +146,8 @@ const PostJob = () => {
               <Label>Experience</Label>
               <Input
                 type="text"
-                name="experience"
-                value={input.experience}
+                name="experienceLevel"
+                value={input.experienceLevel}
                 onChange={changeEventHandler}
                 className="my-1"
               />
