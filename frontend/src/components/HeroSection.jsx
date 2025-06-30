@@ -24,8 +24,7 @@ export const HeroSection = () => {
           <span className="text-[#6A38C2]">Dream Jobs</span>
         </h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi
-          illo suscipit repudiandae nihil nisi.
+         "Find opportunities that match your passion and potential, with trusted employers across the industry."
         </p>
         <div className="flex w-[40%] shadow-lg border border-gray-200 pl-5  rounded-full items-center gap-4 h-8 mx-auto">
           <input
