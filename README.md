@@ -15,7 +15,8 @@ Key Features & Contributions:
 
 🎨 Responsive UI: Designed a clean, mobile-responsive layout using Tailwind CSS to ensure accessibility across devices.
 
-🚀 Deployment: Deployed the project on Render with environment configuration and build optimization.        Link- https://job-portal-57fw.onrender.com
+🚀 Deployment: Deployed the project on Render with environment configuration and build optimization.  
+Link- https://job-portal-57fw.onrender.com
 
 
 Tech Stack:
