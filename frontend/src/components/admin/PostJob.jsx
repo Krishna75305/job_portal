@@ -73,16 +73,18 @@ const PostJob = () => {
   //   }
   // };
 
-  const submitHandler = async (e) => {
+ const submitHandler = async (e) => {
   e.preventDefault();
 
   const formattedInput = {
     ...input,
     salary: Number(input.salary),
-    requirements: input.requirements
-      .split(",")
-      .map((item) => item.trim()),
+    requirements: input.requirements.split(",").map((i) => i.trim()),
+    company: input.companyId,
+    created_by: user._id,
   };
+
+  delete formattedInput.companyId;
 
   try {
     setLoading(true);
