@@ -2,35 +2,67 @@ import {Job} from "../models/job.model.js";
 
 // admin post krega job
 
-export const postJob = async (req, res) =>{
+export const postJob = async (req, res) => {
   try {
-    const { title, description, requirements , salary ,location, jobType, experience , position , companyId} = req.body;
+    const { 
+      title, 
+      description, 
+      requirements, 
+      salary, 
+      location, 
+      jobType, 
+      experience, 
+      position, 
+      companyId 
+    } = req.body;
+
     const userId = req.id;
-    if(!title || !description || !requirements || !salary || !location ||   !jobType || !experience || !position || !companyId){ 
-      return res.status(400).json({ message: 'Please fill all the fields',
-      success: false
-       })
-    };
+
+    if (
+      !title ||
+      !description ||
+      !requirements ||
+      !salary ||
+      !location ||
+      !jobType ||
+      !experience ||
+      !position ||
+      !companyId
+    ) {
+      return res.status(400).json({
+        message: "Please fill all the fields",
+        success: false,
+      });
+    }
+
     const job = await Job.create({
       title,
       description,
-      requirements : requirements.split(","),
-      salary :Number(salary),
+      requirements,                     // FIX 1 ✔
+      salary: Number(salary),
       location,
       jobType,
-      experienceLevel : Number(experience),
+      experienceLevel: String(experience),  // FIX 2 ✔
       position,
-      company : companyId,
-      created_by : userId
-      
+      company: companyId,
+      created_by: userId,
     });
-    return res.status(200).json({ message: ' New Job created successfully',
-    success: true
+
+    return res.status(200).json({
+      message: "New Job created successfully",
+      success: true,
+      job,                                // send job back
     });
+
   } catch (error) {
-    console.log(error);
+    console.log("❌ postJob error:", error);
+    res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
   }
-}
+};
+
 // student ke lie
 export const getAllJobs = async (req, res) =>{
   try {
