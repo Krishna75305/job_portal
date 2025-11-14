@@ -54,37 +54,26 @@ const PostJob = () => {
 
  
 
- const submitHandler = async (e) => {
-  e.preventDefault();
-
-  const formattedInput = {
-    ...input,
-    salary: Number(input.salary),
-    requirements: input.requirements.split(",").map((i) => i.trim()),
-    company: input.companyId,
-    created_by: user._id,
-  };
-
-  delete formattedInput.companyId;
-
-  try {
-    setLoading(true);
-    const res = await axios.post(`${JOB_API_END_POINT}/post`, formattedInput, {
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    });
-
-    if (res.data.success) {
-      toast.success(res.data.message);
-      navigate("/admin/jobs");
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/admin/jobs");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Job post failed");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    toast.error(error?.response?.data?.message || "Job post failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div>
