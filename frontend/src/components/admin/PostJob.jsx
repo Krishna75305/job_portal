@@ -26,12 +26,13 @@ const PostJob = () => {
     salary: "",
     location: "",
     jobType: "",
-    experienceLevel: "",
+    experience: "",     // ✅ FIXED (backend expects experience)
     position: 0,
-    companyId: "",
+    companyId: "",      // ✅ FIXED (backend expects companyId)
   });
 
   const { companies } = useSelector((store) => store.company);
+  const { user } = useSelector((store) => store.auth);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -48,22 +49,36 @@ const PostJob = () => {
       (company) => company.name.toLowerCase() === value
     );
     if (selectedCompany) {
-      setInput({ ...input, companyId: selectedCompany._id });
+      setInput({ ...input, companyId: selectedCompany._id });  // ✅ FIXED
     }
   };
 
- 
-
   const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+  e.preventDefault();
+  try {
+    setLoading(true);
+
+    const payload = {
+      ...input,
+      requirements: input.requirements
+        .split(",")
+        .map((r) => r.trim())
+        .filter((r) => r !== ""),
+      experience: Number(input.experience),
+      salary: Number(input.salary),
+      created_by: user._id,
+    };
+
+    console.log("📦 PAYLOAD SENT:", payload);   // <-- ADD THIS
+
+    const res = await axios.post(`${JOB_API_END_POINT}/post`, payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/jobs");
@@ -84,6 +99,7 @@ const PostJob = () => {
           className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded"
         >
           <div className="grid grid-cols-2 gap-4">
+
             <div className="flex flex-col">
               <Label>Title</Label>
               <Input
@@ -92,8 +108,10 @@ const PostJob = () => {
                 value={input.title}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>Description</Label>
               <Input
@@ -102,28 +120,34 @@ const PostJob = () => {
                 value={input.description}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
-              <Label>Requirements</Label>
+              <Label>Requirements (comma separated)</Label>
               <Input
                 type="text"
                 name="requirements"
                 value={input.requirements}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>Salary</Label>
               <Input
-                type="text"
+                type="number"
                 name="salary"
                 value={input.salary}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>Location</Label>
               <Input
@@ -132,8 +156,10 @@ const PostJob = () => {
                 value={input.location}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>Job Type</Label>
               <Input
@@ -142,18 +168,22 @@ const PostJob = () => {
                 value={input.jobType}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>Experience</Label>
               <Input
-                type="text"
-                name="experienceLevel"
-                value={input.experienceLevel}
+                type="number"
+                name="experience"   // FIXED
+                value={input.experience}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
+
             <div className="flex flex-col">
               <Label>No. of Positions</Label>
               <Input
@@ -162,6 +192,7 @@ const PostJob = () => {
                 value={input.position}
                 onChange={changeEventHandler}
                 className="my-1"
+                required
               />
             </div>
 
@@ -187,6 +218,7 @@ const PostJob = () => {
                 </Select>
               </div>
             )}
+
           </div>
 
           {loading ? (
@@ -199,15 +231,10 @@ const PostJob = () => {
               Post New Job
             </Button>
           )}
-
-          {companies.length === 0 && (
-            <p className="text-xs text-red-600 font-bold text-center my-3">
-              *Please register a company first before posting a job
-            </p>
-          )}
         </form>
       </div>
     </div>
+    
   );
 };
 
