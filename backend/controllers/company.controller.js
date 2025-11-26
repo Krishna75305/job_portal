@@ -13,7 +13,7 @@ export const registerCompany = async (req, res) => {
       });
     }
 
-    let company = await Company.findOne({ name: companyName });
+    let company = await Company.findOne({companyName });
     if (company) {
       return res.status(400).json({
         message: "You can't register the same company again",
