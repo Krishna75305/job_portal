@@ -23,13 +23,11 @@ app.use(cookieParser());
 
 // ✅ CORS: allow frontend domain
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",                   // local dev
-    "https://job-portal-57fw.onrender.com",    // your actual frontend
-  ],
+  origin: "https://job-portal-57fw.onrender.com",
   credentials: true,
 };
 app.use(cors(corsOptions));
+
 
 
 // API routes
