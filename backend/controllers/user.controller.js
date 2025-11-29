@@ -17,10 +17,13 @@ export const register = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists with this email.",
-        success: false,
-      });
+     res.cookie("token", token, {
+  maxAge: 1 * 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  secure: true,     // Render = HTTPS
+  sameSite: "lax",  // SAME DOMAIN → use lax
+});
+
     }
 
     // Handle optional file upload
