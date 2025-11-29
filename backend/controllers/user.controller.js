@@ -109,17 +109,19 @@ export const login = async (req, res) => {
     };
 
     return res
-      .status(200)
-      .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: "strict",
-      })
-      .json({
-        message: `Welcome back ${user.fullname}`,
-        user: sanitizedUser,
-        success: true,
-      });
+  .status(200)
+  .cookie("token", token, {
+    maxAge: 1 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure: true,     // REQUIRED on Render (HTTPS)
+    sameSite: "none", // REQUIRED for cross-domain cookies
+  })
+  .json({
+    message: `Welcome back ${user.fullname}`,
+    user: sanitizedUser,
+    success: true,
+  });
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({
